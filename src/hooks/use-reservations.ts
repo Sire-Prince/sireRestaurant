@@ -32,7 +32,7 @@ ${validated.specialRequests ? `*Note:* ${validated.specialRequests}` : ""}
 
     // 3. Open WhatsApp (Replace with your client's number)
     const phoneNumber = "233XXXXXXXXX"; 
-    const whatsappUrl = `https://wa.me{phoneNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
     window.open(whatsappUrl, "_blank");
     return { success: true };
