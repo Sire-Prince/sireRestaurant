@@ -6,19 +6,14 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { useMenu } from "@/hooks/use-menu";
 import { Gallery } from "./Gallary"; 
+import { MenuItem } from "@/hooks/use-menu";
+import { bookMealOnWhatsApp } from "@/lib/booking"; 
 
 export default function Home() {
   const { data: MENU_DATA } = useMenu();
   const featuredItems = MENU_DATA.filter(item => item.category === "Mains").slice(0, 4);
 
-const bookMealOnWhatsApp = (item: MenuItem) => {
-  const phoneNumber = process.env.NEXT_PUBLIC_RESTAURANT_WHATSAPP || '233123456789'; // Replace with your default
-  const message = `Hello, I'd like to book the meal: *${item.name}* (GH₵ ${item.price}).\n\nDescription: ${item.description}\n\nPlease let me know if it's available and how to proceed.`;
-  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-  
-  // Open in new tab
-  window.open(url, '_blank', 'noopener,noreferrer');
-};
+
   return (
     <div className="w-full bg-background">
       {/* Hero Section */}
