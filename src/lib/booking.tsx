@@ -20,7 +20,7 @@ export const sendReservationToWhatsApp = (data: {
   name: string;
   email: string;
   phone: string;
-  partySize: number;
+  partySize: string;
   date: string;
   time: string;
   specialRequests?: string;
