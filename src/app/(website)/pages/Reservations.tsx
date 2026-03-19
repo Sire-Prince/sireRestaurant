@@ -26,7 +26,7 @@ export default function Reservations() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<ReservationInput>({
     resolver: zodResolver(reservationInputSchema),
     defaultValues: {
-      partySize: 2,
+      partySize: "2",
     }
   });
 

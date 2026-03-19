@@ -6,19 +6,17 @@ export const reservationInputSchema = z.object({
   phone: z.string().min(10, "Please enter a valid phone number"),
   date: z.string().min(1, "Please select a date"),
   time: z.string().min(1, "Please select a time"),
-  partySize: z.coerce.number().min(1, "Must be at least 1").max(20, "For parties over 20"),
+  // Change z.coerce.number() to z.string()
+  partySize: z.string().min(1, "Please select a party size"), 
   specialRequests: z.string().optional(),
 });
 
 export type ReservationInput = z.infer<typeof reservationInputSchema>;
 
 export function useCreateReservation() {
-  // We remove useMutation to avoid the "No QueryClient" error
   const mutateAsync = async (data: ReservationInput) => {
-    // 1. Validate data
     const validated = reservationInputSchema.parse(data);
 
-    // 2. Format the WhatsApp Message
     const message = `*New Reservation Request*
 --------------------------
 *Name:* ${validated.name}
@@ -30,7 +28,6 @@ export function useCreateReservation() {
 ${validated.specialRequests ? `*Note:* ${validated.specialRequests}` : ""}
 --------------------------`;
 
-    // 3. Open WhatsApp (Replace with your client's number)
     const phoneNumber = "233XXXXXXXXX"; 
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
