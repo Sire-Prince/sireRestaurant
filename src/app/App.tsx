@@ -1,45 +1,29 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+"use client"; 
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Layout } from "@/components/layout/Layout";
-import Home from "@/app/pages/Home";
-import Menu from "@/app/pages/Menu";
-import Reservations from "@/app/pages/Reservations";
-import About from "@/app/pages/About";
-import Contact from "@/app/pages/Contact";
-import NotFound from "@/app/pages/not-found";
+import { useState } from "react";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000,
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        staleTime: 5 * 60 * 1000,
+      },
     },
-  },
-});
+  }));
 
-function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/menu" component={Menu} />
-      <Route path="/reservations" component={Reservations} />
-      <Route path="/about" component={About} />
-      <Route path="/contact" component={Contact} />
-      <Route component={NotFound} />
-    </Switch>
+    <html lang="en">
+      <body>
+        <QueryClientProvider client={queryClient}>
+          <Layout>
+            {children} 
+          </Layout>
+        </QueryClientProvider>
+      </body>
+    </html>
   );
 }
-
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-        <Layout>
-          <Router />
-        </Layout>
-      </WouterRouter>
-    </QueryClientProvider>
-  );
-}
-
-export default App;
