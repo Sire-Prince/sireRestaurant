@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useMenu } from "@/hooks/use-menu";
 import { clsx } from "clsx";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { bookMealOnWhatsApp } from "@/lib/booking";
 
 const CATEGORIES = ["Appetizers", "Mains", "Desserts", "Drinks"];

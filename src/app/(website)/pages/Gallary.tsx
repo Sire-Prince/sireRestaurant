@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const galleryImages = [
   {

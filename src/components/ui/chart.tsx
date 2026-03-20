@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
@@ -11,6 +13,7 @@ export type ChartConfig = {
     label?: React.ReactNode
     icon?: React.ComponentType
   } & (
+
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
   )
@@ -114,15 +117,20 @@ const ChartTooltipContent = React.forwardRef<
   (
     {
       active,
+      // @ts-ignore
       payload,
       className,
       indicator = "dot",
       hideLabel = false,
       hideIndicator = false,
+      // @ts-ignore
       label,
+      // @ts-ignore
       labelFormatter,
       labelClassName,
+      // @ts-ignore
       formatter,
+      // @ts-ignore
       color,
       nameKey,
       labelKey,
@@ -147,6 +155,7 @@ const ChartTooltipContent = React.forwardRef<
       if (labelFormatter) {
         return (
           <div className={cn("font-medium", labelClassName)}>
+            {/* @ts-ignore */}
             {labelFormatter(value, payload)}
           </div>
         )
@@ -184,10 +193,11 @@ const ChartTooltipContent = React.forwardRef<
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
           {payload
-            .filter((item) => item.type !== "none")
-            .map((item, index) => {
+            .filter((item: any) => item.type !== "none")
+            .map((item: any, index: number) => {
               const key = `${nameKey || item.name || item.dataKey || "value"}`
               const itemConfig = getPayloadConfigFromPayload(config, item, key)
+              // @ts-ignore
               const indicatorColor = color || item.payload.fill || item.color
 
               return (
@@ -260,11 +270,12 @@ const ChartLegend = RechartsPrimitive.Legend
 
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<"div"> &
-    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
-      hideIcon?: boolean
-      nameKey?: string
-    }
+  React.ComponentProps<"div"> & {
+    payload?: any[]
+    verticalAlign?: "top" | "bottom" | "middle"
+    hideIcon?: boolean
+    nameKey?: string
+  }
 >(
   (
     { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
@@ -285,40 +296,38 @@ const ChartLegendContent = React.forwardRef<
           className
         )}
       >
-        {payload
-          .filter((item) => item.type !== "none")
-          .map((item) => {
-            const key = `${nameKey || item.dataKey || "value"}`
-            const itemConfig = getPayloadConfigFromPayload(config, item, key)
+        {payload.map((item) => {
+          const key = `${nameKey || item.dataKey || "value"}`
+          const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
-            return (
-              <div
-                key={item.value}
-                className={cn(
-                  "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
-                )}
-              >
-                {itemConfig?.icon && !hideIcon ? (
-                  <itemConfig.icon />
-                ) : (
-                  <div
-                    className="h-2 w-2 shrink-0 rounded-[2px]"
-                    style={{
-                      backgroundColor: item.color,
-                    }}
-                  />
-                )}
-                {itemConfig?.label}
-              </div>
-            )
-          })}
+          return (
+            <div
+              key={item.value}
+              className={cn(
+                "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
+              )}
+            >
+              {itemConfig?.icon && !hideIcon ? (
+                <itemConfig.icon />
+              ) : (
+                <div
+                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  style={{
+                    backgroundColor: item.color,
+                  }}
+                />
+              )}
+              {itemConfig?.label || item.value}
+            </div>
+          )
+        })}
       </div>
     )
   }
 )
 ChartLegendContent.displayName = "ChartLegend"
 
-// Helper to extract item config from a payload.
+// Helper function to extract config from payload
 function getPayloadConfigFromPayload(
   config: ChartConfig,
   payload: unknown,
@@ -330,26 +339,21 @@ function getPayloadConfigFromPayload(
 
   const payloadPayload =
     "payload" in payload &&
-    typeof payload.payload === "object" &&
-    payload.payload !== null
-      ? payload.payload
+    typeof (payload as any).payload === "object" &&
+    (payload as any).payload !== null
+      ? (payload as any).payload
       : undefined
 
   let configLabelKey: string = key
 
-  if (
-    key in payload &&
-    typeof payload[key as keyof typeof payload] === "string"
-  ) {
-    configLabelKey = payload[key as keyof typeof payload] as string
+  if (key in payload && typeof (payload as any)[key] === "string") {
+    configLabelKey = (payload as any)[key] as string
   } else if (
     payloadPayload &&
     key in payloadPayload &&
-    typeof payloadPayload[key as keyof typeof payloadPayload] === "string"
+    typeof payloadPayload[key] === "string"
   ) {
-    configLabelKey = payloadPayload[
-      key as keyof typeof payloadPayload
-    ] as string
+    configLabelKey = payloadPayload[key] as string
   }
 
   return configLabelKey in config

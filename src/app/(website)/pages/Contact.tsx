@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 export default function Contact() {
   return (

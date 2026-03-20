@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2 } from "lucide-react";
 import { reservationInputSchema, type ReservationInput } from "@/hooks/use-reservations";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { sendReservationToWhatsApp } from "@/lib/booking"; 
 
 const TIME_SLOTS = Array.from({ length: 11 }).map((_, i) => {
